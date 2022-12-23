@@ -1,15 +1,25 @@
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue';
 
 const content = ref('');
+const errMsg = ref('');
+const isSubmitting = ref(false);
 const count = computed(() => content.value.length);
 const limit = 140;
 
 function handleClickSubmit() {
-  if (count > limit) {
+  isSubmitting.value = true;
+  errMsg.value = '';
+  if (content.value.length > limit) {
+    errMsg.value = `内容不能超过${limit}个字`;
+    isSubmitting.value = false;
     return;
   }
   console.log(content.value);
+  setTimeout(() => {
+    isSubmitting.value = false;
+    uni.navigateBack();
+  }, 1000);
 }
 </script>
 
@@ -21,7 +31,8 @@ function handleClickSubmit() {
       <text v-else class="text-sm text-orange-500">{{ count }} / {{ limit }}</text>
     </view>
     <textarea class="content-edit mt-3 rounded-lg" v-model="content" />
-    <button class="mt-3 rounded-lg btn-submit" @click="handleClickSubmit">发表</button>
+    <button :loading="isSubmitting" class="mt-3 rounded-lg btn-submit" @click="handleClickSubmit">发表</button>
+    <text v-if="!!errMsg" class="text-sm text-red-500 mt-2">{{ errMsg }}</text>
   </view>
 </template>
 
