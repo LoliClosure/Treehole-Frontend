@@ -12,23 +12,23 @@ const displayName = ref('');
 </script>
 
 <template>
-  <view class="p-3 bg-neutral-100">
-    <view class="p-3 rounded-lg bg-white active:bg-neutral-50 flex items-center" @click="handleClickLogin">
+  <view class="p-4 bg-neutral-100">
+    <view class="p-4 rounded-lg bg-white active:bg-neutral-50 flex items-center" @click="handleClickLogin">
       <image v-if="user.profile" class="avatar" mode="aspectFill" :src="user.profile.avatar" />
       <image v-else class="avatar" mode="aspectFill" src="/static/images/Akkarin.jpg" />
       <text class="ml-4 text-lg">{{ user.profile?.nickname ?? '未登录' }}</text>
     </view>
-    <t-card v-if="user.profile" extraClass="mt-3" title="设置显示昵称">
+    <t-card v-if="user.profile" extraClass="mt-4" title="设置显示昵称">
       <input
-          class="mt-2 px-4 py-2 rounded bg-neutral-100"
+          class="mt-2 px-4 py-3 rounded bg-neutral-100"
           type="nickname"
           maxlength="10"
           placeholder="请输入显示昵称"
           v-model="displayName"
       />
     </t-card>
-    <t-card v-if="user.profile" extraClass="mt-3" title="退出登录">
-      <button class="mt-2 py-2 rounded danger-button" @click="user.logout">
+    <t-card v-if="user.profile" extraClass="mt-4" title="退出登录">
+      <button class="mt-2 py-3 rounded danger-button" @click="user.logout">
         退出登录
       </button>
     </t-card>

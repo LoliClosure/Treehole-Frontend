@@ -24,14 +24,14 @@ function handleClickSubmit() {
 </script>
 
 <template>
-  <view class="p-3">
+  <view class="p-4">
     <view class="flex justify-between items-center">
       <text class="text-sm text-gray-500">抒发你的心中所想</text>
       <text v-if="count < limit" class="text-sm text-gray-500">{{ count }} / {{ limit }}</text>
       <text v-else class="text-sm text-orange-500">{{ count }} / {{ limit }}</text>
     </view>
-    <textarea class="content-edit mt-3 rounded-lg" v-model="content" />
-    <button :loading="isSubmitting" class="mt-3 rounded-lg btn-submit" @click="handleClickSubmit">发表</button>
+    <textarea class="content-edit mt-4 rounded-lg" v-model="content" />
+    <button :loading="isSubmitting" class="mt-4 rounded-lg btn-submit" @click="handleClickSubmit">发表</button>
     <text v-if="!!errMsg" class="text-sm text-red-500 mt-2">{{ errMsg }}</text>
   </view>
 </template>
@@ -45,6 +45,7 @@ function handleClickSubmit() {
 }
 
 .btn-submit {
+  border: none;
   background-color: #3cc51f;
   color: #fff;
 }

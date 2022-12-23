@@ -8,7 +8,7 @@ const props = defineProps<{
 </script>
 
 <template>
-  <view :class="className(extraClass, 'pt-2 pb-3 px-3 rounded-lg bg-white')">
+  <view :class="className(extraClass, 'pt-3 pb-4 px-4 rounded-lg bg-white')">
     <text class="text-sm text-gray-500">{{ props.title }}</text>
     <slot />
   </view>
