@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { user } from '../../utils/auth';
 import { computed } from 'vue';
+import { Message } from '../../models/Message';
 
 function handleClickLogin() {
   if (!user.profile) {
@@ -11,6 +12,16 @@ function handleClickLogin() {
 }
 
 const avatarUrl = computed(() => user.profile?.avatar);
+
+const msgDemo = new Message({
+  id: 1,
+  nickname: 'test',
+  title: 'test title',
+  content: '最好的领导是做心灵的导航仪，而不是做赶车人',
+  likes: 0,
+  createdAt: '2021-08-01 12:00:00',
+  updatedAt: '2021-08-01 12:00:00',
+})
 </script>
 
 <template>
@@ -32,6 +43,9 @@ const avatarUrl = computed(() => user.profile?.avatar);
         <navigator url="/pages/post/post">发表</navigator>
       </view>
     </view>
+  </view>
+  <view class="mt-4 p-4">
+    <t-message :message="msgDemo" />
   </view>
 </template>
 

@@ -17,13 +17,13 @@ export class Message implements MessageInterface {
   createdAt: string;
   updatedAt: string;
 
-  constructor(message: MessageInterface) {
-    this.id = message.id;
-    this.title = message.title;
-    this.content = message.content;
-    this.nickname = message.nickname;
-    this.likes = message.likes;
-    this.createdAt = message.createdAt;
-    this.updatedAt = message.updatedAt;
+  constructor(data: MessageInterface) {
+    this.id = data.id;
+    this.title = data.title;
+    this.content = data.content;
+    this.nickname = data.nickname;
+    this.likes = data.likes;
+    this.createdAt = data.createdAt;
+    this.updatedAt = data.updatedAt;
   }
 }
