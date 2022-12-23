@@ -28,6 +28,9 @@ const avatarUrl = computed(() => user.profile?.avatar);
       <view class="mt-4">
         <button type="primary" @click="handleClickLogin">{{ user.profile ? '退出登录' : '登录' }}</button>
       </view>
+      <view class="mt-4">
+        <navigator url="/pages/post/post">发表</navigator>
+      </view>
     </view>
   </view>
 </template>
