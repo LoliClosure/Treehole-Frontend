@@ -2,6 +2,7 @@
 <project version="4">
   <component name="UniappSupport">
     <option name="cliProject" value="true" />
+    <option name="newPageCreateDir" value="true" />
     <option name="pluginEnabled" value="true" />
     <option name="srcPath" value="/src/" />
     <option name="uniapp" value="true" />

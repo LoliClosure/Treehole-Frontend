@@ -1,2 +1,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/utilities';
+
+page {
+  background-color: #f5f5f5;
+}

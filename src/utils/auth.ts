@@ -9,6 +9,8 @@ export interface UserProfileType {
 
 export interface AuthStateType {
   profile?: UserProfileType;
+  encryptedData?: string;
+  iv?: string;
   login: () => Promise<void>;
   logout: () => void;
 }
@@ -22,14 +24,25 @@ function uniUserProfile2UserProfile(userInfo: UserInfo): UserProfileType {
 }
 
 export const user = reactive<AuthStateType>({
-  profile: undefined,
+  profile: uni.getStorageSync('profile') as UserProfileType,
+  encryptedData: uni.getStorageSync('encryptedData') as string,
+  iv: uni.getStorageSync('iv') as string,
   login() {
     return new Promise((resolve, reject) => {
       uni.getUserProfile({
         desc: '登录',
         success: (res) => {
-          const { userInfo } = res;
+          const { userInfo, encryptedData, iv } = res;
           this.profile = uniUserProfile2UserProfile(userInfo);
+          this.encryptedData = encryptedData;
+          this.iv = iv;
+          try {
+            uni.setStorageSync('profile', this.profile);
+            uni.setStorageSync('encryptedData', this.encryptedData);
+            uni.setStorageSync('iv', this.iv);
+          } catch (err) {
+            console.error(err);
+          }
           resolve();
         },
         fail: (err) => {
@@ -40,5 +53,14 @@ export const user = reactive<AuthStateType>({
   },
   logout() {
     this.profile = undefined;
+    this.encryptedData = undefined;
+    this.iv = undefined;
+    try {
+      uni.removeStorageSync('profile');
+      uni.removeStorageSync('encryptedData');
+      uni.removeStorageSync('iv');
+    } catch (err) {
+      console.error(err);
+    }
   },
 });

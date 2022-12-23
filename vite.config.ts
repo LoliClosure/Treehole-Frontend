@@ -12,7 +12,7 @@ const postcssPlugins = [require("autoprefixer")(), require("tailwindcss")()];
 if (!WeappTailwindcssDisabled) {
   postcssPlugins.push(
     require("postcss-rem-to-responsive-pixel")({
-      rootValue: 16,
+      rootValue: 32,
       propList: ["*"],
       transformUnit: "rpx",
     })
