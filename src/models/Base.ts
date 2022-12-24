@@ -1,4 +1,4 @@
-export const BaseUrl = 'http://192.168.2.168:3000/api';
+export const BaseUrl = 'https://experiment.hawa130.com/api';
 
 export interface ResponseData<T = any> {
   data: T;
