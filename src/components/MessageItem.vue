@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { Message } from '../models/Message';
+import { className } from '../utils/className';
 
 const props = defineProps<{
+  extraClass?: string;
   message: Message;
 }>();
 
-const { message } = props;
+const { message, extraClass } = props;
 </script>
 
 <template>
-  <view class="msg-item rounded-lg px-4 py-3">
+  <view :class="className(extraClass, 'msg-item rounded-lg px-4 py-3')">
     <view class="flex justify-between items-center">
-      <text class="text-sm font-bold">{{ message.nickname }}</text>
+      <text class="text-sm font-bold">{{ message.title }}</text>
     </view>
     <view class="mt-2">
       <text class="text-gray-800">{{ message.content }}</text>
