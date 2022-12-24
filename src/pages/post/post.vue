@@ -76,4 +76,8 @@ function handleClickSubmit() {
   background-color: #3cc51f;
   color: #fff;
 }
+
+.btn-submit:active {
+  background-color: rgb(60 197 31 / 70%);
+}
 </style>

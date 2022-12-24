@@ -20,7 +20,7 @@ function handleSubmit() {
 <template>
   <view class="px-4 flex flex-col items-center">
     <image class="mt-4 avatar" :src="avatar" />
-    <button class="mt-4" open-type="chooseAvatar" @chooseavatar="handleChooseAvatar">设置头像</button>
+    <button class="mt-4 rounded btn-small" size="mini" open-type="chooseAvatar" @chooseavatar="handleChooseAvatar">设置头像</button>
     <view class="mt-4 w-full">
       <text class="px-2 text-sm text-gray-500">昵称</text>
       <input class="edit mt-1 rounded-lg" type="nickname" v-model="nickname" placeholder="请输入昵称" />
@@ -46,5 +46,15 @@ function handleSubmit() {
   border: none;
   background-color: #3cc51f;
   color: #fff;
+}
+
+.btn-submit:active {
+  background-color: rgb(60 197 31 / 70%);
+}
+
+.btn-small {
+  border: none;
+  background-color: rgb(160, 160, 160, 0.1);
+  color: #3cc51f;
 }
 </style>
