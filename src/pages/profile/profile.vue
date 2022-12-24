@@ -23,7 +23,7 @@ const displayName = ref('');
         <uni-icons custom-prefix="iconfont" type="icon-logout" />
       </view>
     </view>
-    <view class="mt-4 p-4 bg-white rounded-lg active:bg-neutral-50 flex justify-between items-center">
+    <view v-if="user.profile" class="mt-4 p-4 bg-white rounded-lg active:bg-neutral-50 flex justify-between items-center">
       <text>我的树洞</text>
       <uni-icons type="right" />
     </view>

@@ -3,7 +3,7 @@ export interface MessageInterface {
   title: string;
   content: string;
   contentHtml: string;
-  likes: number;
+  likeCount: number;
   createTime: string;
 }
 
@@ -12,7 +12,7 @@ export class Message implements MessageInterface {
   title: string;
   content: string;
   contentHtml: string;
-  likes: number;
+  likeCount: number;
   createTime: string;
 
   constructor(data: MessageInterface) {
@@ -20,7 +20,7 @@ export class Message implements MessageInterface {
     this.title = data.title;
     this.content = data.content;
     this.contentHtml = data.contentHtml;
-    this.likes = data.likes;
+    this.likeCount = data.likeCount;
     this.createTime = data.createTime;
   }
 }
