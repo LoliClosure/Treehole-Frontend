@@ -4,7 +4,12 @@ import { ref } from 'vue';
 
 function handleClickLogin() {
   if (!user.profile) {
-    user.login().catch((err) => console.log(err));
+    uni.showToast({ title: '登录中...', icon: 'loading' });
+    user.login()
+      .catch((err) => console.log(err))
+      .finally(() => uni.hideToast());
+  } else {
+    uni.navigateTo({ url: '/pages/edit/edit' });
   }
 }
 
@@ -13,20 +18,24 @@ const displayName = ref('');
 
 <template>
   <view class="p-4 bg-neutral-100">
-    <view class="p-4 rounded-lg bg-white flex justify-between items-center">
-      <view class="flex-grow rounded flex items-center active:bg-neutral-50" @click="handleClickLogin">
-        <image v-if="user.profile" class="avatar" mode="aspectFill" :src="user.profile.avatar" />
+    <view class="rounded-lg bg-white flex justify-between items-center">
+      <view class="py-4 pl-4 flex-grow rounded-l-lg flex items-center active:bg-neutral-50" @click="handleClickLogin">
+        <image v-if="user.profile" class="avatar" mode="aspectFill" :src="user.profile?.avatar" />
         <image v-else class="avatar" mode="aspectFill" src="/static/images/Akkarin.jpg" />
         <text class="ml-4 text-lg">{{ user.profile?.nickname ?? '点击登录' }}</text>
       </view>
-      <view v-if="user.profile" class="h-full pl-8 py-3 active:bg-neutral-50 rounded" @click="user.logout">
-        <uni-icons custom-prefix="iconfont" type="icon-logout" />
+      <view v-if="user.profile" class="h-full pl-8 pr-4 py-7 active:bg-neutral-50 rounded-r-lg" @click="user.logout">
+        <uni-icons custom-prefix="iconfont" type="icon-logout" size="20" />
       </view>
     </view>
-    <view v-if="user.profile" class="mt-4 p-4 bg-white rounded-lg active:bg-neutral-50 flex justify-between items-center">
+    <navigator
+      v-if="user.profile"
+      class="mt-4 p-4 bg-white rounded-lg active:bg-neutral-50 flex justify-between items-center"
+      url="/pages/mine/mine"
+    >
       <text>我的树洞</text>
       <uni-icons type="right" />
-    </view>
+    </navigator>
   </view>
 </template>
 

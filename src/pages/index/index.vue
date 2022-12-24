@@ -18,21 +18,21 @@ function fetchData(type: 'refresh' | 'loadmore') {
     page.value = 1;
   }
   ajax.get<ListData<Message>>('/post/list', { pageSize: size, pageNum: page.value })
-      .then((res) => {
-        if (type === 'loadmore') {
-          messages.value = messages.value.concat(res.data.list);
-        } else {
-          messages.value = [...res.data.list];
-        }
-        count.value = res.data.count;
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        uni.stopPullDownRefresh();
-        status.value = 'more';
-      });
+    .then((res) => {
+      if (type === 'loadmore') {
+        messages.value = messages.value.concat(res.data.list);
+      } else {
+        messages.value = [...res.data.list];
+      }
+      count.value = res.data.count;
+    })
+    .catch((err) => {
+      console.log(err);
+    })
+    .finally(() => {
+      uni.stopPullDownRefresh();
+      status.value = 'more';
+    });
 }
 
 function loadMore() {

@@ -29,6 +29,20 @@
 				"navigationBarTitleText": "抒发",
 				"enablePullDownRefresh": false
 			}
+		},
+		{
+			"path": "pages/mine/mine",
+			"style": {
+				"navigationBarTitleText": "我的树洞",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/edit/edit",
+			"style": {
+				"navigationBarTitleText": "编辑资料",
+				"enablePullDownRefresh": false
+			}
 		}
 	],
 	"globalStyle": {
