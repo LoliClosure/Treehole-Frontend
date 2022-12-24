@@ -1,4 +1,4 @@
-import { BaseUrl, ResponseData } from '../models/Base';
+import { BaseUrl, ResponseData, ResponseError } from '../models/Base';
 
 class ajax {
   static getAuthorization() {
@@ -10,19 +10,32 @@ class ajax {
     }
   }
 
-  static get<T = any>(url: string): Promise<ResponseData<T>> {
+  static serialize(obj: { [key: string]: any }) {
+    const str = [];
+    for (const p in obj) {
+      if (obj.hasOwnProperty(p)) {
+        str.push(encodeURIComponent(p) + '=' + encodeURIComponent(obj[p]));
+      }
+    }
+    return str.join('&');
+  }
+
+  static get<T = any>(url: string, params?: { [key: string]: any }): Promise<ResponseData<T>> {
     return new Promise((resolve, reject) => {
       uni.request({
-        url: BaseUrl + url,
+        url: params ? BaseUrl + url + '?' + this.serialize(params) : BaseUrl + url,
         method: 'GET',
         success: (res) => {
+          if (res.statusCode >= 400) {
+            reject(res.data as ResponseError);
+          }
           resolve(res.data as ResponseData<T>);
         },
         fail: (err) => {
           reject(err);
         },
         header: {
-          'authorization': this.getAuthorization(),
+          'Authorization': this.getAuthorization(),
         }
       });
     });
@@ -35,10 +48,13 @@ class ajax {
         method: 'POST',
         data,
         header: {
-          'content-type': 'application/json',
-          'authorization': this.getAuthorization(),
+          'Content-Type': 'application/json',
+          'Authorization': this.getAuthorization(),
         },
         success: (res) => {
+          if (res.statusCode >= 400) {
+            reject(res.data as ResponseError);
+          }
           resolve(res.data as ResponseData<T>);
         },
         fail: (err) => {
@@ -55,10 +71,13 @@ class ajax {
         method: 'PUT',
         data,
         header: {
-          'content-type': 'application/json',
-          'authorization': this.getAuthorization(),
+          'Content-Type': 'application/json',
+          'Authorization': this.getAuthorization(),
         },
         success: (res) => {
+          if (res.statusCode >= 400) {
+            reject(res.data as ResponseError);
+          }
           resolve(res.data as ResponseData<T>);
         },
         fail: (err) => {
@@ -74,9 +93,12 @@ class ajax {
         url: BaseUrl + url,
         method: 'DELETE',
         header: {
-          'authorization': this.getAuthorization(),
+          'Authorization': this.getAuthorization(),
         },
         success: (res) => {
+          if (res.statusCode >= 400) {
+            reject(res.data as ResponseError);
+          }
           resolve(res.data as ResponseData<T>);
         },
         fail: (err) => {

@@ -1,33 +1,70 @@
 <script setup lang="ts">
 import { Message } from '../../models/Message';
 import { user } from '../../utils/auth';
+import { onMounted, ref } from 'vue';
+import ajax from '../../utils/ajax';
+import { ListData } from '../../models/Base';
+import { onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app';
 
-const messages = [
-  new Message({
-    id: 1,
-    title: 'test title',
-    content: '最好的领导是做心灵的导航仪，而不是做赶车人',
-    contentHtml: '<p>最好的领导是做心灵的导航仪，而不是做赶车人</p>',
-    likeCount: 0,
-    createTime: '2021-08-01 12:00:00',
-  }),
-  new Message({
-    id: 2,
-    title: 'test title',
-    content: '最好的领导是做心灵的导航仪，而不是做赶车人',
-    contentHtml: '<p>最好的领导是做心灵的导航仪，而不是做赶车人</p>',
-    likeCount: 1,
-    createTime: '2022-08-01 12:00:00',
-  }),
-];
+const messages = ref<Message[]>([]);
+const size = 10;
+const page = ref(1);
+const count = ref(0);
+const status = ref('loading');
 
+function fetchData(type: 'refresh' | 'loadmore') {
+  status.value = 'loading';
+  if (type === 'refresh') {
+    page.value = 1;
+  }
+  ajax.get<ListData<Message>>('/post/list', { pageSize: size, pageNum: page.value })
+      .then((res) => {
+        if (type === 'loadmore') {
+          messages.value = messages.value.concat(res.data.list);
+        } else {
+          messages.value = [...res.data.list];
+        }
+        count.value = res.data.count;
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        uni.stopPullDownRefresh();
+        status.value = 'more';
+      });
+}
 
+function loadMore() {
+  if (status.value === 'loading') {
+    return;
+  }
+  if (messages.value.length >= count.value) {
+    status.value = 'no-more';
+    return;
+  }
+  page.value += 1;
+  fetchData('loadmore');
+}
+
+onMounted(() => {
+  fetchData('refresh');
+});
+
+onPullDownRefresh(() => {
+  fetchData('refresh');
+});
+
+onReachBottom(() => {
+  loadMore();
+});
 </script>
 
 <template>
   <view class="mt-4 px-4">
     <navigator v-if="user.profile" class="btn-primary rounded-lg py-2" url="/pages/post/post">抒发心情</navigator>
-    <t-message v-for="msg in messages" extraClass="mt-4 rounded-lg" :message="msg" />
+    <t-message v-for="msg in messages" :key="msg.id" extraClass="mt-4 rounded-lg" :message="msg" />
+    <uni-load-more @clickLoadMore="loadMore" :status="status" />
   </view>
 </template>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import ajax from '../../utils/ajax';
 
 const title = ref('');
 const content = ref('');
@@ -23,11 +24,21 @@ function handleClickSubmit() {
     return;
   }
   isSubmitting.value = true;
-  console.log(content.value);
-  setTimeout(() => {
-    isSubmitting.value = false;
+  ajax.post('/post', {
+    title: title.value,
+    content: content.value,
+  }).then(() => {
     uni.navigateBack();
-  }, 1000);
+    uni.showToast({
+      title: '发布成功',
+      icon: 'success',
+      duration: 1000,
+    });
+  }).catch((err) => {
+    errMsg.value = err.message;
+  }).finally(() => {
+    isSubmitting.value = false;
+  });
 }
 </script>
 
@@ -41,7 +52,9 @@ function handleClickSubmit() {
     <input class="title-edit mt-4 rounded-lg" type="text" placeholder="标题" v-model="title" />
     <textarea class="content-edit mt-4 rounded-lg" v-model="content" />
     <button :loading="isSubmitting" class="mt-4 rounded-lg btn-submit" @click="handleClickSubmit">发表</button>
-    <text v-if="!!errMsg" class="text-sm text-red-500 mt-2">{{ errMsg }}</text>
+    <view v-if="errMsg" class="text-center py-2">
+      <text class="text-sm text-red-500">{{ errMsg }}</text>
+    </view>
   </view>
 </template>
 

@@ -11,7 +11,9 @@
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 100
 			}
 		},
 		{
@@ -45,8 +47,8 @@
 			{
 				"pagePath": "pages/index/index",
 				"text": "首页",
-				"iconPath": "static/images/tabbar/home.png",
-				"selectedIconPath": "static/images/tabbar/home-active.png"
+				"iconPath": "static/images/tabbar/seed.png",
+				"selectedIconPath": "static/images/tabbar/seed-active.png"
 			},
 			{
 				"pagePath": "pages/profile/profile",
