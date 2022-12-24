@@ -13,16 +13,20 @@ const displayName = ref('');
 
 <template>
   <view class="p-4 bg-neutral-100">
-    <view class="p-4 rounded-lg bg-white active:bg-neutral-50 flex items-center" @click="handleClickLogin">
-      <image v-if="user.profile" class="avatar" mode="aspectFill" :src="user.profile.avatar" />
-      <image v-else class="avatar" mode="aspectFill" src="/static/images/Akkarin.jpg" />
-      <text class="ml-4 text-lg">{{ user.profile?.nickname ?? '未登录' }}</text>
+    <view class="p-4 rounded-lg bg-white flex justify-between items-center">
+      <view class="flex-grow rounded flex items-center active:bg-neutral-50" @click="handleClickLogin">
+        <image v-if="user.profile" class="avatar" mode="aspectFill" :src="user.profile.avatar" />
+        <image v-else class="avatar" mode="aspectFill" src="/static/images/Akkarin.jpg" />
+        <text class="ml-4 text-lg">{{ user.profile?.nickname ?? '点击登录' }}</text>
+      </view>
+      <view v-if="user.profile" class="h-full pl-8 py-3 active:bg-neutral-50 rounded" @click="user.logout">
+        <uni-icons custom-prefix="iconfont" type="icon-logout" />
+      </view>
     </view>
-    <t-card v-if="user.profile" extraClass="mt-4" title="退出登录">
-      <button class="mt-2 py-3 rounded danger-button" @click="user.logout">
-        退出登录
-      </button>
-    </t-card>
+    <view class="mt-4 p-4 bg-white rounded-lg active:bg-neutral-50 flex justify-between items-center">
+      <text>我的树洞</text>
+      <uni-icons type="right" />
+    </view>
   </view>
 </template>
 

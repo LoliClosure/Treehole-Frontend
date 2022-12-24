@@ -9,18 +9,20 @@ const count = computed(() => content.value.length);
 const limit = 140;
 
 function handleClickSubmit() {
-  isSubmitting.value = true;
   errMsg.value = '';
+  if (title.value.length === 0) {
+    errMsg.value = '标题不能为空';
+    return;
+  }
   if (content.value.length === 0) {
     errMsg.value = '内容不能为空';
-    isSubmitting.value = false;
     return;
   }
   if (content.value.length > limit) {
     errMsg.value = `内容不能超过${limit}个字`;
-    isSubmitting.value = false;
     return;
   }
+  isSubmitting.value = true;
   console.log(content.value);
   setTimeout(() => {
     isSubmitting.value = false;

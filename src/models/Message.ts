@@ -2,28 +2,25 @@ export interface MessageInterface {
   id: number;
   title: string;
   content: string;
-  nickname: string;
+  contentHtml: string;
   likes: number;
-  createdAt: string;
-  updatedAt: string;
+  createTime: string;
 }
 
 export class Message implements MessageInterface {
   id: number;
   title: string;
   content: string;
-  nickname: string;
+  contentHtml: string;
   likes: number;
-  createdAt: string;
-  updatedAt: string;
+  createTime: string;
 
   constructor(data: MessageInterface) {
     this.id = data.id;
     this.title = data.title;
     this.content = data.content;
-    this.nickname = data.nickname;
+    this.contentHtml = data.contentHtml;
     this.likes = data.likes;
-    this.createdAt = data.createdAt;
-    this.updatedAt = data.updatedAt;
+    this.createTime = data.createTime;
   }
 }

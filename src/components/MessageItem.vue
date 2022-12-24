@@ -15,11 +15,9 @@ const { message, extraClass } = props;
     <view class="flex justify-between items-center">
       <text class="text-sm font-bold">{{ message.title }}</text>
     </view>
-    <view class="mt-2">
-      <text class="text-gray-800">{{ message.content }}</text>
-    </view>
+    <view class="mt-2 text-gray-800" v-html="message.contentHtml" />
     <view class="mt-2 flex justify-between items-end">
-      <text class="text-sm text-gray-500">{{ message.createdAt }}</text>
+      <text class="text-sm text-gray-500">{{ message.createTime }}</text>
       <text class="text-sm text-gray-500">{{ message.likes }} 赞</text>
     </view>
   </view>

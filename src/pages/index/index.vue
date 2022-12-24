@@ -16,21 +16,19 @@ const avatarUrl = computed(() => user.profile?.avatar);
 const messages = [
   new Message({
     id: 1,
-    nickname: 'test',
     title: 'test title',
     content: '最好的领导是做心灵的导航仪，而不是做赶车人',
+    contentHtml: '<p>最好的领导是做心灵的导航仪，而不是做赶车人</p>',
     likes: 0,
-    createdAt: '2021-08-01 12:00:00',
-    updatedAt: '2021-08-01 12:00:00',
+    createTime: '2021-08-01 12:00:00',
   }),
   new Message({
     id: 2,
-    nickname: 'test',
     title: 'test title',
     content: '最好的领导是做心灵的导航仪，而不是做赶车人',
+    contentHtml: '<p>最好的领导是做心灵的导航仪，而不是做赶车人</p>',
     likes: 1,
-    createdAt: '2022-08-01 12:00:00',
-    updatedAt: '2022-08-01 12:00:00',
+    createTime: '2022-08-01 12:00:00',
   }),
 ];
 </script>
