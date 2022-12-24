@@ -1,17 +1,9 @@
-export interface UserInterface {
-  wxName: string;
-  nickname: string;
-  avatar: string;
-}
-
-export class User implements UserInterface {
-  wxName: string;
-  nickname: string;
-  avatar: string;
-
-  constructor(user: UserInterface) {
-    this.wxName = user.wxName;
-    this.nickname = user.nickname;
-    this.avatar = user.avatar;
-  }
+export interface User {
+  id: string;
+  username: string;
+  nickname?: string;
+  avatar?: string;
+  openid?: string;
+  role?: string;
+  createTime?: string;
 }

@@ -7,6 +7,11 @@ export interface MessageInterface {
   createTime: string;
 }
 
+export interface CreateMessageInterface {
+  title: string;
+  content: string;
+}
+
 export class Message implements MessageInterface {
   id: number;
   title: string;

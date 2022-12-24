@@ -1,66 +1,100 @@
 import { reactive } from 'vue';
-import UserInfo = UniNamespace.UserInfo;
-
-export interface UserProfileType {
-  avatar: string;
-  nickname: string;
-  openid: string;
-}
+import ajax from './ajax';
+import { Base64 } from 'js-base64';
+import { User } from '../models/User';
 
 export interface AuthStateType {
-  profile?: UserProfileType;
-  encryptedData?: string;
-  iv?: string;
+  profile?: User;
   login: () => Promise<void>;
   logout: () => void;
+  getProfile: () => Promise<void>;
 }
 
-function uniUserProfile2UserProfile(userInfo: UserInfo): UserProfileType {
+export interface JWTClaims {
+  username: string;
+  id: string;
+  exp: number;
+  role: string;
+  iat: number;
+}
+
+export interface AuthType {
+  token: string;
+}
+
+function getStorageJWT(): string | undefined {
+  return uni.getStorageSync('token');
+}
+
+function getProfileFromJWT(token?: string): JWTClaims | undefined {
+  if (!token) {
+    return undefined;
+  }
+  try {
+    const payload = token.split('.')[1];
+    const profile = JSON.parse(Base64.decode(payload));
+    if (profile.exp < Date.now() / 1000) {
+      return undefined;
+    }
+    return profile as JWTClaims;
+  } catch (error) {
+    uni.removeStorageSync('token');
+    throw new Error('Invalid token');
+  }
+}
+
+function claims2Profile(claims?: JWTClaims): User | undefined {
+  if (!claims) {
+    return undefined;
+  }
   return {
-    avatar: userInfo.avatarUrl,
-    nickname: userInfo.nickName,
-    openid: userInfo.openId,
+    username: claims.username,
+    nickname: claims.username,
+    id: claims.id,
   };
 }
 
 export const user = reactive<AuthStateType>({
-  profile: uni.getStorageSync('profile') as UserProfileType,
-  encryptedData: uni.getStorageSync('encryptedData') as string,
-  iv: uni.getStorageSync('iv') as string,
+  profile: claims2Profile(getProfileFromJWT(getStorageJWT())),
   login() {
     return new Promise((resolve, reject) => {
-      uni.getUserProfile({
-        desc: '登录',
+      uni.login({
         success: (res) => {
-          const { userInfo, encryptedData, iv } = res;
-          this.profile = uniUserProfile2UserProfile(userInfo);
-          this.encryptedData = encryptedData;
-          this.iv = iv;
-          try {
-            uni.setStorageSync('profile', this.profile);
-            uni.setStorageSync('encryptedData', this.encryptedData);
-            uni.setStorageSync('iv', this.iv);
-          } catch (err) {
-            console.error(err);
-          }
-          resolve();
+          ajax.post<AuthType>('/auth/wechat', { code: res.code })
+            .then((res) => {
+              uni.setStorageSync('token', res.data.token);
+              this.profile = claims2Profile(getProfileFromJWT(res.data.token));
+              this.getProfile().catch((err) => reject(err));
+            })
+            .catch((err) => {
+              reject(err);
+            });
         },
-        fail: (err) => {
-          reject(err);
-        },
+        fail: err => reject(err),
       });
     });
   },
   logout() {
     this.profile = undefined;
-    this.encryptedData = undefined;
-    this.iv = undefined;
     try {
-      uni.removeStorageSync('profile');
-      uni.removeStorageSync('encryptedData');
-      uni.removeStorageSync('iv');
+      uni.removeStorageSync('token');
     } catch (err) {
       console.error(err);
     }
+  },
+  getProfile() {
+    if (!this.profile) {
+      throw new Error('User not logged in');
+    }
+    return new Promise((resolve, reject) => {
+      ajax.get<User>('/user')
+        .then((res) => {
+          this.profile = res.data;
+          resolve();
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
   },
 });
