@@ -41,7 +41,7 @@ class ajax {
     });
   }
 
-  static post<T = any>(url: string, data: any): Promise<ResponseData<T>> {
+  static post<T = any>(url: string, data?: any): Promise<ResponseData<T>> {
     return new Promise((resolve, reject) => {
       uni.request({
         url: BaseUrl + url,
@@ -64,7 +64,7 @@ class ajax {
     });
   }
 
-  static put<T = any>(url: string, data: any): Promise<ResponseData<T>> {
+  static put<T = any>(url: string, data?: any): Promise<ResponseData<T>> {
     return new Promise((resolve, reject) => {
       uni.request({
         url: BaseUrl + url,

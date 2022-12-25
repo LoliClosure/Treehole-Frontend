@@ -15,12 +15,14 @@ const { message, extraClass } = props;
 const relativeTime = moment(message.createTime).fromNow();
 
 function like() {
-  ajax.post('/' + message.id + '/like', null);
-  message.likeCount++;
+  ajax.post(`/post/${message.id}/like`)
+      .then(() => {
+        message.likeCount++;
+      });
 }
 
 function deleteSelf() {
-  ajax.delete('/post/' + message.id);
+  ajax.delete(`/post/${message.id}`);
   // 还要删除自身
 }
 </script>
