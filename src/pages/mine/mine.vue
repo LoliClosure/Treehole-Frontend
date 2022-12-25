@@ -46,6 +46,10 @@ function loadMore() {
   fetchData('loadmore');
 }
 
+function removeDeletedMsg(id) {
+  messages.value = messages.value.filter((m) => m.id !== id)
+}
+
 onMounted(() => {
   fetchData('refresh');
 });
@@ -61,7 +65,7 @@ onReachBottom(() => {
 
 <template>
   <view class="mt-4 px-4">
-    <t-message v-for="msg in messages" :key="msg.id" extraClass="mt-4 rounded-lg" :message="msg" deletable="true" />
+    <t-message v-for="msg in messages" @deleted="(id) => removeDeletedMsg(id)" :key="msg.id" extraClass="mt-4 rounded-lg" :message="msg" deletable="true" />
     <uni-load-more @clickLoadMore="loadMore" :status="status" />
   </view>
 </template>

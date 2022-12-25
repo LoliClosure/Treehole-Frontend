@@ -4,6 +4,7 @@ import { className } from '../utils/className';
 import moment from 'moment';
 import { ref } from 'vue';
 import ajax from "../utils/ajax";
+import {user} from "../utils/auth";
 
 const props = defineProps<{
   extraClass?: string;
@@ -13,6 +14,7 @@ const props = defineProps<{
 
 const { message, extraClass } = props;
 const relativeTime = moment(message.createTime).fromNow();
+const emit = defineEmits(['deleted'])
 
 function like() {
   ajax.post(`/post/${message.id}/like`)
@@ -28,8 +30,22 @@ function like() {
 }
 
 function deleteSelf() {
-  ajax.delete(`/post/${message.id}`);
-  // 还要删除自身
+  ajax.delete(`/post/${message.id}`)
+    .then(() => {
+      uni.showToast({
+        title: '删除成功',
+        icon: 'success',
+        duration: 1000,
+      });
+    }).catch(() => {
+      uni.showToast({
+        title: '删除失败',
+        icon: 'error',
+        duration: 1000,
+      });
+    }).finally(() => {
+      emit('deleted', message.id) // 删除自身
+    });
 }
 </script>
 
