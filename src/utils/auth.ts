@@ -22,7 +22,7 @@ export interface AuthType {
   token: string;
 }
 
-function getStorageJWT(): string | undefined {
+export function getStorageJWT(): string | undefined {
   return uni.getStorageSync('token');
 }
 
