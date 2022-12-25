@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { user } from '../../utils/auth';
 import { ref } from 'vue';
+import ajax from "../../utils/ajax";
+import * as assert from "assert";
 
 const nickname = ref(user.profile?.nickname);
 const avatar = ref(user.profile?.avatar);
+const errMsg = ref('');
+const isSubmitting = ref(false);
+const nameLenLimit = 15;
 
 function handleChooseAvatar(e: any) {
   const { avatarUrl } = e.detail;
@@ -13,7 +18,35 @@ function handleChooseAvatar(e: any) {
 }
 
 function handleSubmit() {
-
+  if (nickname.value === undefined)
+    nickname.value = '';
+  if (avatar.value === undefined)
+    avatar.value = '';
+  errMsg.value = '';
+    if (nickname.value.length === 0) {
+    errMsg.value = '昵称不能为空';
+    return;
+  }
+  if (nickname.value.length > nameLenLimit) {
+    errMsg.value = `内容不能超过${nameLenLimit}个字`;
+    return;
+  }
+  isSubmitting.value = true;
+  ajax.put('/user', {
+    nickname: nickname.value,
+    avatar: avatar.value,
+  }).then(() => {
+    uni.navigateBack();
+    uni.showToast({
+      title: '资料已保存',
+      icon: 'success',
+      duration: 1000,
+    });
+  }).catch((err) => {
+    errMsg.value = err.message;
+  }).finally(() => {
+    isSubmitting.value = false;
+  });
 }
 </script>
 
@@ -24,7 +57,7 @@ function handleSubmit() {
     <view class="mt-4 w-full">
       <text class="px-2 text-sm text-gray-500">昵称</text>
       <input class="edit mt-1 rounded-lg" type="nickname" v-model="nickname" placeholder="请输入昵称" />
-      <button class="mt-4 rounded-lg btn-submit" @click="handleSubmit">保存</button>
+      <button :loading="isSubmitting" class="mt-4 rounded-lg btn-submit" @click="handleSubmit">保存</button>
     </view>
   </view>
 </template>
