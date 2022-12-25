@@ -16,9 +16,15 @@ const relativeTime = moment(message.createTime).fromNow();
 
 function like() {
   ajax.post(`/post/${message.id}/like`)
-      .then(() => {
-        message.likeCount++;
+    .then(() => {
+      message.likeCount++;
+    }).catch((err) => {
+      uni.showToast({
+        title: '点赞失败：',
+        icon: 'error',
+        duration: 1000,
       });
+    });
 }
 
 function deleteSelf() {

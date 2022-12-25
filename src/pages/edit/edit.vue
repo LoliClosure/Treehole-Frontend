@@ -28,7 +28,7 @@ function handleSubmit() {
     return;
   }
   if (nickname.value.length > nameLenLimit) {
-    errMsg.value = `内容不能超过${nameLenLimit}个字`;
+    errMsg.value = `昵称不能超过${nameLenLimit}个字`;
     return;
   }
   isSubmitting.value = true;
@@ -46,6 +46,7 @@ function handleSubmit() {
     errMsg.value = err.message;
   }).finally(() => {
     isSubmitting.value = false;
+    user.getProfile();
   });
 }
 </script>
@@ -58,6 +59,9 @@ function handleSubmit() {
       <text class="px-2 text-sm text-gray-500">昵称</text>
       <input class="edit mt-1 rounded-lg" type="nickname" v-model="nickname" placeholder="请输入昵称" />
       <button :loading="isSubmitting" class="mt-4 rounded-lg btn-submit" @click="handleSubmit">保存</button>
+    </view>
+    <view v-if="errMsg" class="text-center py-2">
+      <text class="text-sm text-red-500">{{ errMsg }}</text>
     </view>
   </view>
 </template>
