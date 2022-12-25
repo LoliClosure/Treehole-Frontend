@@ -7,7 +7,7 @@ import ajax from "../utils/ajax";
 const props = defineProps<{
   extraClass?: string;
   message: Message;
-  deletable: boolean;
+  deletable?: boolean;
 }>();
 
 const { message, extraClass } = props;

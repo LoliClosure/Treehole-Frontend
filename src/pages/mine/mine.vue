@@ -16,7 +16,7 @@ function fetchData(type: 'refresh' | 'loadmore') {
   if (type === 'refresh') {
     page.value = 1;
   }
-  ajax.get<ListData<Message>>('/post/list', { pageSize: size, pageNum: page.value })
+  ajax.get<ListData<Message>>('/post/mine', { pageSize: size, pageNum: page.value })
       .then((res) => {
         if (type === 'loadmore') {
           messages.value = messages.value.concat(res.data.list);
@@ -65,7 +65,7 @@ onReachBottom(() => {
 
 <template>
   <view class="mt-4 px-4">
-    <t-message v-for="msg in messages" @deleted="(id) => removeDeletedMsg(id)" :key="msg.id" extraClass="mt-4 rounded-lg" :message="msg" deletable="true" />
+    <t-message v-for="msg in messages" @deleted="(id) => removeDeletedMsg(id)" :key="msg.id" extraClass="mt-4 rounded-lg" :message="msg" :deletable="true" />
     <uni-load-more @clickLoadMore="loadMore" :status="status" />
   </view>
 </template>
