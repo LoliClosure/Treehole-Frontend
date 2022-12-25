@@ -13,15 +13,15 @@ const props = defineProps<{
 
 const { message, extraClass } = props;
 const relativeTime = moment(message.createTime).fromNow();
-const liked = ref(false);
 
-function toggleLike() {
-  liked.value ? message.likeCount-- : message.likeCount++;
-  liked.value = !liked.value;
+function like() {
+  ajax.post('/' + message.id + '/like', null);
+  message.likeCount++;
 }
 
 function deleteSelf() {
   ajax.delete('/post/' + message.id);
+  // 还要删除自身
 }
 </script>
 
@@ -36,8 +36,8 @@ function deleteSelf() {
       <view v-if="deletable" @click="deleteSelf" class="flex items-center gap-1">
         <uni-icons type="trash" />
       </view>
-      <view @click="toggleLike" class="flex items-center gap-1">
-        <uni-icons :type="liked ? 'hand-up' : 'hand-up-filled'" />
+      <view @click="like" class="flex items-center gap-1">
+        <uni-icons type="hand-up" />
         <text class="text-sm text-gray-500">{{ message.likeCount }}</text>
       </view>
     </view>
