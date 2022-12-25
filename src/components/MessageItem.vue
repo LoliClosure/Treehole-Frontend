@@ -2,9 +2,7 @@
 import { Message } from '../models/Message';
 import { className } from '../utils/className';
 import moment from 'moment';
-import { ref } from 'vue';
 import ajax from "../utils/ajax";
-import {user} from "../utils/auth";
 
 const props = defineProps<{
   extraClass?: string;
@@ -14,7 +12,7 @@ const props = defineProps<{
 
 const { message, extraClass } = props;
 const relativeTime = moment(message.createTime).fromNow();
-const emit = defineEmits(['deleted'])
+const emit = defineEmits(['deleted']);
 
 function like() {
   ajax.post(`/post/${message.id}/like`)

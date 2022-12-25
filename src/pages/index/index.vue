@@ -4,7 +4,7 @@ import { user } from '../../utils/auth';
 import { onMounted, ref } from 'vue';
 import ajax from '../../utils/ajax';
 import { ListData } from '../../models/Base';
-import { onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app';
+import { onPullDownRefresh, onShow, onReachBottom } from '@dcloudio/uni-app';
 
 const messages = ref<Message[]>([]);
 const size = 10;
@@ -47,7 +47,7 @@ function loadMore() {
   fetchData('loadmore');
 }
 
-onMounted(() => {
+onShow(() => {
   fetchData('refresh');
 });
 
@@ -63,6 +63,7 @@ onReachBottom(() => {
 <template>
   <view class="mt-4 px-4">
     <navigator v-if="user.profile" class="btn-primary rounded-lg py-2" url="/pages/post/post">抒发心情</navigator>
+    <view v-else class="text-center py-2 text-sm text-slate-500">登录以抒发心情</view>
     <t-message v-for="msg in messages" :key="msg.id" extraClass="mt-4 rounded-lg" :message="msg" />
     <uni-load-more @clickLoadMore="loadMore" :status="status" />
   </view>
